@@ -1,0 +1,1 @@
+import{_ as e,o as t,c as _,a as c}from"./index-32f7be87.js";const n={},o=c("h1",null,"새로운 여행을 해봐요",-1),s=[o];function r(a,i){return t(),_("div",null,s)}const d=e(n,[["render",r]]);export{d as default};
