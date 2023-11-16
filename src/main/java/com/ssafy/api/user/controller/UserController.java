@@ -27,21 +27,22 @@ public class UserController {
 	@Autowired
 	OAuthService oAuthService;
 	
-	@PostMapping("/")
-	public ResponseEntity<?> user(@RequestParam("sign") String sign){
-		ObjectMapper om = new ObjectMapper();
-		ResponseEntity res= null;
-		Map<String, Object> map = new HashMap<>();
+	@PostMapping("")
+	public ResponseEntity<?> user(@RequestBody Map<String, String> req){
+		ResponseEntity response = null;
+		String sign = req.get("sign");
 		
 		if(sign != null) {
 			System.out.println(sign);
+
 		} else {
 			// sign 값이 없음
+			response = new ResponseEntity<String>("sign 값을 입력해주세요", HttpStatus.BAD_REQUEST);
 		}
 		
 		
 		
-		return res;
+		return response;
 	}
 	
 
