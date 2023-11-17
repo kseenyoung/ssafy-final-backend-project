@@ -1,11 +1,15 @@
 package com.ssafy.api.user.model.service;
 
+import com.ssafy.api.user.model.UserJWTLoginDto;
+import com.ssafy.api.user.model.UserJoinDto;
+import com.ssafy.api.user.model.UserLoginDto;
+import com.ssafy.api.utils.MyException;
 import java.util.UUID;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.ssafy.api.user.model.Member;
+import com.ssafy.api.user.model.OAuthUser;
 import com.ssafy.api.user.model.mapper.UserMapper;
 import com.ssafy.api.utils.JwtTokenProvider;
 
@@ -23,7 +27,7 @@ public class UserServiceImpl implements UserService {
 		String access_token = JwtTokenProvider.createAccessToken(name, salt);
 		String refresh_token = JwtTokenProvider.createRefreshToken(id, salt);
 		
-		Member m = new Member();
+		UserJWTLoginDto m = new UserJWTLoginDto();
 		m.setUser_id(id);
 		m.setSalt(salt);
 		m.setAccess_token(access_token);
@@ -32,5 +36,20 @@ public class UserServiceImpl implements UserService {
 		userMapper.saveToken(m);
 		
 		return new String[] {access_token, refresh_token};
+	}
+
+	@Override
+	public String login(UserLoginDto userLoginDto) throws MyException {
+		return userMapper.login(userLoginDto);
+	}
+
+	@Override
+	public boolean isUserIdDuplicate(String userId) throws MyException {
+        return userMapper.isUserIdDuplicate(userId) != null;
+    }
+
+	@Override
+	public void join(UserJoinDto userJoinDto) throws MyException {
+		userMapper.join(userJoinDto);
 	}
 }
