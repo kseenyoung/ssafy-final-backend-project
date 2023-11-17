@@ -20,8 +20,14 @@ public class RegEx {
 
     // 닉네임은 2글자 이상, 8글자 이하여야 하며 특수문자는 사용할 수 없어요
     public static void isUserNickname(String user_nickname) throws MyException{
-        if(Pattern.matches("^[a-zA-Z0-9가-힣]{2,8}$", user_nickname)){
+        if(!Pattern.matches("^[가-힣a-zA-Z]{2,8}$", user_nickname)){
             throw new MyException("유저 닉네임 정규표현식을 따라주세요.", HttpStatus.BAD_REQUEST);
+        }
+    }
+
+    public  static void isUserEmail(String user_email) throws MyException{
+        if(!Pattern.matches("^[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*@[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*.[a-zA-Z]{2,3}$", user_email)){
+            throw new MyException("알맞는 이메일 표현으로 작성해주세요.", HttpStatus.BAD_REQUEST);
         }
     }
 
