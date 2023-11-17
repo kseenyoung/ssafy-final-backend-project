@@ -2,7 +2,7 @@ package com.ssafy.api.user.model;
 
 import java.util.Date;
 
-public class Member {
+public class OAuthUser {
 
 	private String user_id, user_name, user_password, email_id, email_domain;
 	private String salt, access_token, refresh_token;

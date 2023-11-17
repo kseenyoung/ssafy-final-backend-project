@@ -2,8 +2,6 @@ package com.ssafy.api.utils;
 
 import java.util.Date;
 
-import com.ssafy.api.user.model.Member;
-
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Header;
 import io.jsonwebtoken.Jws;
