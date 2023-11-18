@@ -85,8 +85,7 @@ public class UserController {
 
 					userService.join(userJoinDto);
 
-					HttpResponseBody<String> responseBody = new HttpResponseBody<>();
-					responseBody.setData("회원가입 성공");
+					HttpResponseBody<String> responseBody = new HttpResponseBody<>("join OK", "회원가입 성공");
 					response = new ResponseEntity<>(responseBody, HttpStatus.OK);
 					return response;
 
