@@ -20,7 +20,7 @@ public class RegEx {
 
     // 닉네임은 2글자 이상, 8글자 이하여야 하며 특수문자는 사용할 수 없어요
     public static void isUserNickname(String user_nickname) throws MyException{
-        if(!Pattern.matches("^[가-힣a-zA-Z]{2,8}$", user_nickname)){
+        if(!Pattern.matches("^[가-힣a-zA-Z0-9]{2,8}$", user_nickname)){
             throw new MyException("유저 닉네임 정규표현식을 따라주세요.", HttpStatus.BAD_REQUEST);
         }
     }

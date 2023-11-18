@@ -2,6 +2,7 @@ package com.ssafy.api.user.controller;
 
 import com.ssafy.api.user.model.UserJoinDto;
 import com.ssafy.api.user.model.UserLoginDto;
+import com.ssafy.api.utils.HttpResponseBody;
 import com.ssafy.api.utils.MyException;
 import java.util.HashMap;
 import java.util.Map;
@@ -35,11 +36,11 @@ public class UserController {
 	OAuthService oAuthService;
 	
 	@PostMapping("")
-	public ResponseEntity<?> user(@RequestBody Map<String, String> body, HttpServletRequest request){
-		ResponseEntity response = null;
+	public ResponseEntity<HttpResponseBody<?>> user(@RequestBody Map<String, String> body, HttpServletRequest request){
+		ResponseEntity<HttpResponseBody<?>> response = null;
 		String sign = body.get("sign");
 		String user_agent = request.getHeader("User-Agent");
-		System.out.println("body : " + body);
+//		System.out.println("body : " + body);
 		HttpSession session = null;
 
 		try{
@@ -61,7 +62,10 @@ public class UserController {
 						session = request.getSession();
 						session.setAttribute("userLoginDto", userLoginDto);
 						session.setAttribute("user_agent", user_agent);
-						return new ResponseEntity<String>("login ok", HttpStatus.OK);
+
+						HttpResponseBody<String> responseBody = new HttpResponseBody<>();
+						responseBody.setData(user_nickname);
+						response = new ResponseEntity<>(responseBody, HttpStatus.OK);
 					} else{
 						throw new MyException("해당하는 회원이 없습니다.", HttpStatus.BAD_REQUEST);
 					}
@@ -80,7 +84,11 @@ public class UserController {
 					System.out.println(userJoinDto);
 
 					userService.join(userJoinDto);
-					response = new ResponseEntity<String>("회원가입 성공", HttpStatus.OK);
+
+					HttpResponseBody<String> responseBody = new HttpResponseBody<>();
+					responseBody.setData("회원가입 성공");
+					response = new ResponseEntity<>(responseBody, HttpStatus.OK);
+					return response;
 
 				} else{ // sign 입력이 잘못된 경우
 					throw new MyException("sign 값을 다시 확인해주세요.", HttpStatus.BAD_REQUEST);
@@ -88,11 +96,15 @@ public class UserController {
 
 			} else {
 				// sign 값이 없음
-				response = new ResponseEntity<String>("sign 값을 입력해주세요", HttpStatus.BAD_REQUEST);
+				HttpResponseBody<String> responseBody = new HttpResponseBody<>();
+				responseBody.setData("sign 값을 입력해주세요");
+				response = new ResponseEntity<>(responseBody, HttpStatus.BAD_REQUEST);
 			}
 		} catch (MyException e){
 			e.printStackTrace();
-			response = new ResponseEntity<String>(e.getMessage(), e.getStatus());
+			HttpResponseBody<String> responseBody = new HttpResponseBody<>();
+			responseBody.setData(e.getMessage());
+			response = new ResponseEntity<>(responseBody, e.getStatus());
 		}
 
 		
