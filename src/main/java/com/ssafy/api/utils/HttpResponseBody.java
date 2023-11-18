@@ -4,6 +4,13 @@ public class HttpResponseBody<T> {
     private T data;
     private String msg;
 
+    public HttpResponseBody() {}
+
+    public HttpResponseBody(String msg, T data) {
+        this.data = data;
+        this.msg = msg;
+    }
+
     public void setData(T data) {
         this.data = data;
     }

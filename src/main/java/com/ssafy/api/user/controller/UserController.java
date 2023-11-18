@@ -64,8 +64,7 @@ public class UserController {
 						session.setAttribute("userLoginDto", userLoginDto);
 						session.setAttribute("user_agent", user_agent);
 
-						HttpResponseBody<UserLoginVO> responseBody = new HttpResponseBody<>();
-						responseBody.setData(userLoginVO);
+						HttpResponseBody<UserLoginVO> responseBody = new HttpResponseBody<>("login OK", userLoginVO);
 						response = new ResponseEntity<>(responseBody, HttpStatus.OK);
 					} else{
 						throw new MyException("해당하는 회원이 없습니다.", HttpStatus.BAD_REQUEST);
