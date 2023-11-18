@@ -3,6 +3,7 @@ package com.ssafy.api.user.model.service;
 import com.ssafy.api.user.model.UserJWTLoginDto;
 import com.ssafy.api.user.model.UserJoinDto;
 import com.ssafy.api.user.model.UserLoginDto;
+import com.ssafy.api.user.model.UserLoginVO;
 import com.ssafy.api.utils.MyException;
 import java.util.UUID;
 
@@ -39,7 +40,7 @@ public class UserServiceImpl implements UserService {
 	}
 
 	@Override
-	public String login(UserLoginDto userLoginDto) throws MyException {
+	public UserLoginVO login(UserLoginDto userLoginDto) throws MyException {
 		return userMapper.login(userLoginDto);
 	}
 

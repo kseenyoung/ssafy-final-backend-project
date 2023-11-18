@@ -2,6 +2,7 @@ package com.ssafy.api.user.controller;
 
 import com.ssafy.api.user.model.UserJoinDto;
 import com.ssafy.api.user.model.UserLoginDto;
+import com.ssafy.api.user.model.UserLoginVO;
 import com.ssafy.api.utils.HttpResponseBody;
 import com.ssafy.api.utils.MyException;
 import java.util.HashMap;
@@ -57,14 +58,14 @@ public class UserController {
 					UserLoginDto userLoginDto = new UserLoginDto(user_id, user_password);
 //					System.out.println(userLoginDto);
 
-					String user_nickname = userService.login(userLoginDto);
-					if(user_nickname != null){  // 로그인 성공
+					UserLoginVO userLoginVO = userService.login(userLoginDto);
+					if(userLoginVO != null){  // 로그인 성공
 						session = request.getSession();
 						session.setAttribute("userLoginDto", userLoginDto);
 						session.setAttribute("user_agent", user_agent);
 
-						HttpResponseBody<String> responseBody = new HttpResponseBody<>();
-						responseBody.setData(user_nickname);
+						HttpResponseBody<UserLoginVO> responseBody = new HttpResponseBody<>();
+						responseBody.setData(userLoginVO);
 						response = new ResponseEntity<>(responseBody, HttpStatus.OK);
 					} else{
 						throw new MyException("해당하는 회원이 없습니다.", HttpStatus.BAD_REQUEST);
