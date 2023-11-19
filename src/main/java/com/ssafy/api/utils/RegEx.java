@@ -1,11 +1,12 @@
 package com.ssafy.api.utils;
 
+import com.ssafy.api.exception.MyException;
 import java.util.regex.Pattern;
 import org.springframework.http.HttpStatus;
 
 public class RegEx {
     // 아이디는 5글자 이상, 15글자 이하여야 하고 영문소문자와 숫자만 가능하다.
-    public static void isUserId(String user_id) throws MyException{
+    public static void isUserId(String user_id) throws MyException {
         if(!Pattern.matches("^[a-z0-9]{5,15}$", user_id)){
             throw new MyException("유저 아이디 정규표현식을 따라주세요.", HttpStatus.BAD_REQUEST);
         }

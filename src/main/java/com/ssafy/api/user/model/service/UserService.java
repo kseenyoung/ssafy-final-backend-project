@@ -3,7 +3,7 @@ package com.ssafy.api.user.model.service;
 import com.ssafy.api.user.model.UserJoinDto;
 import com.ssafy.api.user.model.UserLoginDto;
 import com.ssafy.api.user.model.UserLoginVO;
-import com.ssafy.api.utils.MyException;
+import com.ssafy.api.exception.MyException;
 
 public interface UserService {
 	

@@ -1,6 +1,6 @@
 package com.ssafy.api.user.model;
 
-import com.ssafy.api.utils.MyException;
+import com.ssafy.api.exception.MyException;
 import com.ssafy.api.utils.RegEx;
 import org.springframework.http.HttpStatus;
 

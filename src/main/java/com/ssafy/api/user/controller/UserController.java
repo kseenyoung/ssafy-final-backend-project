@@ -4,14 +4,13 @@ import com.ssafy.api.user.model.UserJoinDto;
 import com.ssafy.api.user.model.UserLoginDto;
 import com.ssafy.api.user.model.UserLoginVO;
 import com.ssafy.api.utils.HttpResponseBody;
-import com.ssafy.api.utils.MyException;
+import com.ssafy.api.exception.MyException;
 import java.util.HashMap;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpRequest;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -21,10 +20,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.ssafy.api.user.model.service.OAuthService;
 import com.ssafy.api.user.model.service.UserService;
-import org.springframework.web.servlet.function.ServerRequest.Headers;
 
 @RestController
 @RequestMapping("/user")

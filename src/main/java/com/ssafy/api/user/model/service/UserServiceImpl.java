@@ -5,13 +5,12 @@ import com.ssafy.api.user.model.UserJoinDto;
 import com.ssafy.api.user.model.UserLoginDto;
 import com.ssafy.api.user.model.UserLoginVO;
 import com.ssafy.api.utils.Encryption;
-import com.ssafy.api.utils.MyException;
+import com.ssafy.api.exception.MyException;
 import java.util.UUID;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.ssafy.api.user.model.OAuthUser;
 import com.ssafy.api.user.model.mapper.UserMapper;
 import com.ssafy.api.utils.JwtTokenProvider;
 

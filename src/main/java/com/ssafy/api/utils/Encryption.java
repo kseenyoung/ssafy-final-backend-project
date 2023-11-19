@@ -1,7 +1,7 @@
 package com.ssafy.api.utils;
 
+import com.ssafy.api.exception.MyException;
 import java.security.MessageDigest;
-import java.security.NoSuchAlgorithmException;
 import org.springframework.http.HttpStatus;
 
 public class Encryption {
