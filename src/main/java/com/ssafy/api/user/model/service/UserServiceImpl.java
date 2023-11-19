@@ -4,6 +4,7 @@ import com.ssafy.api.user.model.UserJWTLoginDto;
 import com.ssafy.api.user.model.UserJoinDto;
 import com.ssafy.api.user.model.UserLoginDto;
 import com.ssafy.api.user.model.UserLoginVO;
+import com.ssafy.api.utils.Encryption;
 import com.ssafy.api.utils.MyException;
 import java.util.UUID;
 
@@ -41,6 +42,9 @@ public class UserServiceImpl implements UserService {
 
 	@Override
 	public UserLoginVO login(UserLoginDto userLoginDto) throws MyException {
+		String encryptedUserPassword = Encryption.encrypt(userLoginDto.getUser_password());
+		userLoginDto.setUser_encryptedPassword(encryptedUserPassword);
+
 		UserLoginVO userLoginVO = userMapper.login(userLoginDto);
 		userLoginVO.setUser_key(UUID.randomUUID().toString());
 		return userLoginVO;
@@ -53,6 +57,8 @@ public class UserServiceImpl implements UserService {
 
 	@Override
 	public void join(UserJoinDto userJoinDto) throws MyException {
+		String encryptedPassword = Encryption.encrypt(userJoinDto.getUser_password());
+		userJoinDto.setUser_encryptedPassword(encryptedPassword);
 		userMapper.join(userJoinDto);
 	}
 }

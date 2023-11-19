@@ -38,6 +38,13 @@ public class UserLoginDto {
         }
     }
 
+    public void setUser_encryptedPassword(String user_encryptedPassword) throws MyException{
+        if(user_encryptedPassword == null){
+            throw new MyException("암호화된 비밀번호는 비어있을 수 없습니다.", HttpStatus.NOT_ACCEPTABLE);
+        }
+        this.user_password = user_encryptedPassword;
+    }
+
     @Override
     public String toString() {
         return "UserLoginDto{" +
