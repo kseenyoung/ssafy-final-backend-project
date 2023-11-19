@@ -63,6 +63,7 @@ public class UserController {
 						session = request.getSession();
 						session.setAttribute("userLoginDto", userLoginDto);
 						session.setAttribute("user_agent", user_agent);
+						session.setAttribute("user_key", userLoginVO.getUser_key());
 
 						HttpResponseBody<UserLoginVO> responseBody = new HttpResponseBody<>("login OK", userLoginVO);
 						response = new ResponseEntity<>(responseBody, HttpStatus.OK);
@@ -106,22 +107,18 @@ public class UserController {
 			response = new ResponseEntity<>(responseBody, e.getStatus());
 		}
 
-		
-		
 		return response;
 	}
 	
 
-	@PostMapping("jwtlogin")
-	public Map<String, Object> jwtlogin(@RequestBody Map<String, String> reqMap){
-		System.out.println(reqMap);
+//	@PostMapping("jwtlogin")
+	public Map<String, Object> jwtlogin(String user_id, String user_nickname){
+//		System.out.println(reqMap);
 		// DB
-		String name = "김신영";
-		String id = reqMap.get("id");
-		if(name != null) {  // login ok - token 발행
-			String[] tokens = userService.jwtlogin(name, id);
+		if(user_id != null && user_nickname != null) {  // login ok - token 발행
+			String[] tokens = userService.jwtlogin(user_id, user_nickname);
 			if(tokens.length > 0) {  // ok
-				Map<String, Object> resMap = new HashMap();
+				Map<String, Object> resMap = new HashMap<>();
 				resMap.put("tokens", tokens);
 				return resMap;
 			} else { // login Ok, token Fail..

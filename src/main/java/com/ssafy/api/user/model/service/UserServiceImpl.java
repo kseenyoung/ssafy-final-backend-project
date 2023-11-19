@@ -21,27 +21,29 @@ public class UserServiceImpl implements UserService {
 	UserMapper userMapper;
 
 	@Override
-	public String[] jwtlogin(String name, String id) {
+	public String[] jwtlogin(String user_id, String user_nickname) {
 		// jwt 발급한 뒤 리턴
 		// salt, access, refresh는 DB에 저장해야 함
 		String salt = UUID.randomUUID().toString();
-		String access_token = JwtTokenProvider.createAccessToken(name, salt);
-		String refresh_token = JwtTokenProvider.createRefreshToken(id, salt);
+		String access_token = JwtTokenProvider.createAccessToken(user_id, salt);
+		String refresh_token = JwtTokenProvider.createRefreshToken(user_nickname, salt);
 		
 		UserJWTLoginDto m = new UserJWTLoginDto();
-		m.setUser_id(id);
+		m.setUser_id(user_id);
 		m.setSalt(salt);
 		m.setAccess_token(access_token);
 		m.setRefresh_token(access_token);
 		
 		userMapper.saveToken(m);
 		
-		return new String[] {access_token, refresh_token};
+		return new String[] {access_token, refresh_token, salt};
 	}
 
 	@Override
 	public UserLoginVO login(UserLoginDto userLoginDto) throws MyException {
-		return userMapper.login(userLoginDto);
+		UserLoginVO userLoginVO = userMapper.login(userLoginDto);
+		userLoginVO.setUser_key(UUID.randomUUID().toString());
+		return userLoginVO;
 	}
 
 	@Override

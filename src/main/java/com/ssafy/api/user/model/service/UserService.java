@@ -7,7 +7,7 @@ import com.ssafy.api.utils.MyException;
 
 public interface UserService {
 	
-	public String[] jwtlogin(String name, String id);
+	public String[] jwtlogin(String user_id, String user_name);
 
     UserLoginVO login(UserLoginDto userLoginDto) throws MyException;
 
