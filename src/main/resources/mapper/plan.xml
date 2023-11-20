@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ssafy.api.plan.model.mapper.PlanMapper">
+
+    <insert id="createPlan" parameterType="planCreateDto">
+        insert into plans(title, plan_date)
+        values(#{title}, #{plan_date})
+        <selectKey resultType="int" keyProperty="plan_id" order="AFTER">
+            SELECT last_insert_id()
+        </selectKey>
+    </insert>
+
+    <insert id="connectUserAndPlan" parameterType="planCreateDto">
+        insert into UserPlans(plan_id, user_id)
+        values
+        <foreach item="item" collection="users" separator=",">
+            (#{plan_id}, #{item})
+        </foreach>
+    </insert>
+
+    <insert id="connectPlanAndAttractionInfo" parameterType="planCreateDto">
+        insert into PlansAttractionInfo(plan_id, content_id)
+        values
+        <foreach item="item" collection="content_ides" separator=",">
+            (#{plan_id}, #{item})
+        </foreach>
+    </insert>
+
+</mapper>
