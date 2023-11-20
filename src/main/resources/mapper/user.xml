@@ -15,8 +15,8 @@
         values(#{user_id}, #{user_password}, #{user_nickname}, #{user_name}, #{user_email})
     </insert>
 
-    <select id="login" parameterType="userLoginDto" resultType="String">
-        select user_nickname
+    <select id="login" parameterType="userLoginDto" resultType="userLoginVO">
+        select user_id, user_nickname
         from users
         where user_id=#{user_id}
         and user_password=#{user_password}

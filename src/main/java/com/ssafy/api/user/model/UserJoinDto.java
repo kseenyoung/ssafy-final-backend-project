@@ -1,6 +1,6 @@
 package com.ssafy.api.user.model;
 
-import com.ssafy.api.utils.MyException;
+import com.ssafy.api.exception.MyException;
 import com.ssafy.api.utils.RegEx;
 import org.springframework.http.HttpStatus;
 
@@ -49,6 +49,13 @@ public class UserJoinDto {
         }
         RegEx.isUserPassword(user_password);
         this.user_password = user_password;
+    }
+
+    public void setUser_encryptedPassword(String user_encryptedPassword) throws MyException{
+        if(user_encryptedPassword == null){
+            throw new MyException("암호화된 비밀번호는 비어있을 수 없습니다.", HttpStatus.NOT_ACCEPTABLE);
+        }
+        this.user_password = user_encryptedPassword;
     }
 
     public String getUser_nickname() {
