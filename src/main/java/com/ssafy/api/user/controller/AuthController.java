@@ -92,8 +92,7 @@ public class AuthController {
 
 			} else {
 				// sign 값이 없음
-				HttpResponseBody<String> responseBody = new HttpResponseBody<>();
-				responseBody.setData("sign 값을 입력해주세요");
+				HttpResponseBody<String> responseBody = new HttpResponseBody<>("ERROR", "sign 값을 입력해주세요");
 				response = new ResponseEntity<>(responseBody, HttpStatus.BAD_REQUEST);
 			}
 		} catch (MyException e){
