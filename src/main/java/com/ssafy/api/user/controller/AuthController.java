@@ -63,12 +63,10 @@ public class AuthController {
 							session.setAttribute("user_key", userLoginVO.getUser_key());
 
 							HttpResponseBody<UserLoginVO> responseBody = new HttpResponseBody<>("login OK", userLoginVO);
-							response = new ResponseEntity<>(responseBody, HttpStatus.OK);
+							return new ResponseEntity<>(responseBody, HttpStatus.OK);
 						} else{
 							throw new MyException("해당하는 회원이 없습니다.", HttpStatus.BAD_REQUEST);
 						}
-
-						break;
 					case "join":
 						String user_id_join = body.get("user_id");
 						if(userService.isUserIdDuplicate(user_id_join)){
@@ -85,7 +83,8 @@ public class AuthController {
 						userService.join(userJoinDto);
 
 						HttpResponseBody<String> responseBody = new HttpResponseBody<>("join OK", "회원가입 성공");
-						response = new ResponseEntity<>(responseBody, HttpStatus.OK);
+						return new ResponseEntity<>(responseBody, HttpStatus.OK);
+
 					default:
 						throw new MyException("sign 값을 다시 확인해주세요.", HttpStatus.BAD_REQUEST);
 				}
@@ -96,10 +95,8 @@ public class AuthController {
 				response = new ResponseEntity<>(responseBody, HttpStatus.BAD_REQUEST);
 			}
 		} catch (MyException e){
-			e.printStackTrace();
-			HttpResponseBody<String> responseBody = new HttpResponseBody<>();
-			responseBody.setData(e.getMessage());
-			response = new ResponseEntity<>(responseBody, e.getStatus());
+			HttpResponseBody<String> responseBody = new HttpResponseBody<>("error", e.getMessage());
+			return new ResponseEntity<>(responseBody, e.getStatus());
 		}
 
 		return response;

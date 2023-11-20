@@ -35,10 +35,6 @@ public class PlanController {
             System.out.println(sign);
             try{
             switch (sign){
-                case "logout":
-                    session.invalidate();
-
-                    break;
                 case "create":
                     UserLoginDto userLoginDto = (UserLoginDto) session.getAttribute("userLoginDto");
                     System.out.println("[plan create] " + userLoginDto);
