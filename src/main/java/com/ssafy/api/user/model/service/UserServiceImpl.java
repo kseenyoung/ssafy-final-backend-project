@@ -51,7 +51,8 @@ public class UserServiceImpl implements UserService {
 
 	@Override
 	public boolean isUserIdDuplicate(String userId) throws MyException {
-        return userMapper.isUserIdDuplicate(userId) != null;
+		String user_id = userMapper.isUserIdDuplicate(userId);
+        return user_id != null;
     }
 
 	@Override
