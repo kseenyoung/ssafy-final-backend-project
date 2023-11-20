@@ -1,7 +1,7 @@
 package com.ssafy.api.plan.model.service;
 
 import com.ssafy.api.exception.MyException;
-import org.apache.ibatis.annotations.Param;
+import com.ssafy.api.plan.model.PlanCreateDto;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import com.ssafy.api.plan.model.mapper.PlanMapper;

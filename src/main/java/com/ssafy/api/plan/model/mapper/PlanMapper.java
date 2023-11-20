@@ -1,6 +1,6 @@
 package com.ssafy.api.plan.model.mapper;
 
-import com.ssafy.api.plan.model.service.PlanCreateDto;
+import com.ssafy.api.plan.model.PlanCreateDto;
 import org.apache.ibatis.annotations.Mapper;
 
 @Mapper

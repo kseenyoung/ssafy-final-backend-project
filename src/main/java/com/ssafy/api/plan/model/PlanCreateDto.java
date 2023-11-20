@@ -1,4 +1,4 @@
-package com.ssafy.api.plan.model.service;
+package com.ssafy.api.plan.model;
 
 import com.ssafy.api.exception.MyException;
 import java.util.List;

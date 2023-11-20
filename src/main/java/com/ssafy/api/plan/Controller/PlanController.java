@@ -1,14 +1,12 @@
 package com.ssafy.api.plan.Controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.ssafy.api.plan.model.service.PlanCreateDto;
+import com.ssafy.api.plan.model.PlanCreateDto;
 import com.ssafy.api.plan.model.service.PlanService;
 import com.ssafy.api.user.model.UserLoginDto;
 import com.ssafy.api.utils.HttpResponseBody;
-import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
-import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,7 +15,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
@@ -54,9 +51,11 @@ public class PlanController {
 
                     planService.create(planCreateDto);
 
-
                     break;
                 case "userList":
+                    String user_id = (String)body.get("user_id");
+
+
                     break;
                 case "allList":
                     break;
