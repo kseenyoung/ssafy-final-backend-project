@@ -5,7 +5,7 @@
 <mapper namespace="com.ssafy.api.plan.model.mapper.PlanMapper">
 
     <insert id="createPlan" parameterType="planCreateDto">
-        insert into plans(title, plan_date)
+        insert into Plans(title, plan_date)
         values(#{title}, #{plan_date})
         <selectKey resultType="int" keyProperty="plan_id" order="AFTER">
             SELECT last_insert_id()

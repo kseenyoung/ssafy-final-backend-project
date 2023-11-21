@@ -18,23 +18,14 @@ public class WebConfiguration implements WebMvcConfigurer {
 
     @Override
     public void addCorsMappings(CorsRegistry registry) {
-        //		default 설정.
-//		Allow all origins.
-//		Allow "simple" methods GET, HEAD and POST.
-//		Allow all headers.
-//		Set max age to 1800 seconds (30 minutes).
-        registry
-                .addMapping("/**")
-//                .allowedOrigins("*")
-//			.allowedOrigins("http://localhost:5173", "http://localhost:5174")
-                .allowedMethods(HttpMethod.GET.name(), HttpMethod.POST.name(), HttpMethod.PUT.name(),
-                        HttpMethod.DELETE.name(), HttpMethod.HEAD.name(), HttpMethod.OPTIONS.name(),
-                        HttpMethod.PATCH.name())
-//			.allowedMethods("GET", "POST", "PUT", "DELETE", "OPTIONS", "PATCH", "HEAD")
-//			.allowCredentials(true)
-//			.exposedHeaders("*")
-                .maxAge(1800); // Pre-flight Caching
+        System.out.println("CORS허용...");
+        registry.addMapping("/**")
+                .allowedOrigins("http://localhost:5173") // 오리진 요청을 열어줘야함 (포트 주의)
+                .allowedMethods("GET","POST") // http 모든 메소드 요청 허용
+                .allowedHeaders("*") // 헤더 정보 모두 허용
+                .allowCredentials(true); // 쿠키, 세션 정보도 허용, JSESSIONID도 가능
     }
+
 
     @Override
     public void addInterceptors(InterceptorRegistry registry) {

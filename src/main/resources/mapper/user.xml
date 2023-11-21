@@ -6,31 +6,31 @@
 
     <select id="isUserIdDuplicate" parameterType="String" resultType="String">
         select user_id
-        from users
+        from Users
         where user_id = #{user_id}
     </select>
 
     <insert id="join" parameterType="userJoinDto">
-        insert into users(user_id, user_password, user_nickname, user_name, user_email)
+        insert into Users(user_id, user_password, user_nickname, user_name, user_email)
         values(#{user_id}, #{user_password}, #{user_nickname}, #{user_name}, #{user_email})
     </insert>
 
     <select id="login" parameterType="userLoginDto" resultType="userLoginVO">
         select user_id, user_nickname
-        from users
+        from Users
         where user_id=#{user_id}
         and user_password=#{user_password}
     </select>
 
     <select id="jwtLogin" parameterType="userJWTLoginDto"  resultType="String">
         select user_name
-        from users
+        from Users
         where user_id=#{user_id} and user_password=#{user_password}
     </select>
 
     <insert id="saveToken" parameterType="userJWTLoginDto" >
         insert into
-        users (user_id, salt, access_token, refresh_token)
+        Users (user_id, salt, access_token, refresh_token)
         values (#{user_id}, #{salt},#{access_token}, #{refresh_token})
         on duplicate key
         update salt=#{salt},access_token=#{access_token},refresh_token=#{refresh_token}
