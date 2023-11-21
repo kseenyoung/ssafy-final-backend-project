@@ -1,7 +1,9 @@
 package com.ssafy.api.plan.Controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.ssafy.api.exception.MyException;
 import com.ssafy.api.plan.model.PlanCreateDto;
+import com.ssafy.api.plan.model.UserListVO;
 import com.ssafy.api.plan.model.service.PlanService;
 import com.ssafy.api.user.model.UserLoginDto;
 import com.ssafy.api.utils.HttpResponseBody;
@@ -9,16 +11,18 @@ import java.util.List;
 import java.util.Map;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
+import lombok.Getter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@RequestMapping("plan")
+@RequestMapping("api/plan")
 public class PlanController {
 
     @Autowired
@@ -47,12 +51,19 @@ public class PlanController {
 
                     planService.create(planCreateDto);
 
-                    break;
+                    HttpResponseBody<String> responseBody = new HttpResponseBody<>("ok", "여행 등록 완료");
+                    return new ResponseEntity<>(responseBody, HttpStatus.OK);
+
                 case "userList":
                     String user_id = (String)body.get("user_id");
+                    if(user_id == null){
+                        throw new MyException("조회 할 user_id를 입력해주세요", HttpStatus.BAD_REQUEST);
+                    }
 
+                    List<UserListVO> userListVOS = planService.userList(user_id);
 
-                    break;
+                    return new ResponseEntity<>(new HttpResponseBody<>("ok", userListVOS), HttpStatus.OK);
+
                 case "allList":
                     break;
                 case "addUser":

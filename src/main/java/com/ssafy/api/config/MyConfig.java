@@ -5,7 +5,7 @@ import org.springframework.web.servlet.config.annotation.CorsRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 
-@Configuration
+//@Configuration
 public class MyConfig implements WebMvcConfigurer{
 	
 	@Override
@@ -16,7 +16,7 @@ public class MyConfig implements WebMvcConfigurer{
         .allowedMethods("GET","POST") // http 모든 메소드 요청 허용
         .allowedHeaders("*") // 헤더 정보 모두 허용
         .allowCredentials(true); // 쿠키, 세션 정보도 허용, JSESSIONID도 가능
-		
+
 	}
 
 }

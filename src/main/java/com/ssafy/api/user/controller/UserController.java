@@ -21,11 +21,17 @@ import org.springframework.web.bind.annotation.RestController;
 import com.ssafy.api.user.model.service.UserService;
 
 @RestController
-@RequestMapping("user")
+@RequestMapping("api/user")
 public class UserController {
 
     @Autowired
     UserService userService;
+
+    @GetMapping("home")
+    public String home(){
+        System.out.println("home");
+        return "forward:/";
+    }
 
     @PostMapping("")
     public ResponseEntity<HttpResponseBody<?>> user(@RequestBody Map<String, Object> body, HttpServletRequest request){

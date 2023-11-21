@@ -24,7 +24,7 @@ import com.ssafy.api.user.model.service.OAuthService;
 import com.ssafy.api.user.model.service.UserService;
 
 @RestController
-@RequestMapping("/auth")
+@RequestMapping("api/auth")
 public class AuthController {
 	
 	@Autowired
@@ -38,7 +38,7 @@ public class AuthController {
 		ResponseEntity<HttpResponseBody<?>> response = null;
 		String sign = body.get("sign");
 		String user_agent = request.getHeader("User-Agent");
-//		System.out.println("body : " + body);요
+//		System.out.println("body : " + body);
 
 		try{
 			if(sign != null) {
@@ -82,7 +82,7 @@ public class AuthController {
 
 						userService.join(userJoinDto);
 
-						HttpResponseBody<String> responseBody = new HttpResponseBody<>("join OK", "회원가입 성공");
+						HttpResponseBody<String> responseBody = new HttpResponseBody<>("OK", "회원가입 성공");
 						return new ResponseEntity<>(responseBody, HttpStatus.OK);
 
 					default:
@@ -95,7 +95,7 @@ public class AuthController {
 				response = new ResponseEntity<>(responseBody, HttpStatus.BAD_REQUEST);
 			}
 		} catch (MyException e){
-			HttpResponseBody<String> responseBody = new HttpResponseBody<>("error", e.getMessage());
+			HttpResponseBody<String> responseBody = new HttpResponseBody<>("ERROR", e.getMessage());
 			return new ResponseEntity<>(responseBody, e.getStatus());
 		}
 
