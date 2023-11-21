@@ -24,7 +24,7 @@ import com.ssafy.api.user.model.service.OAuthService;
 import com.ssafy.api.user.model.service.UserService;
 
 @RestController
-@RequestMapping("/auth")
+@RequestMapping("api/auth")
 public class AuthController {
 	
 	@Autowired
@@ -38,56 +38,55 @@ public class AuthController {
 		ResponseEntity<HttpResponseBody<?>> response = null;
 		String sign = body.get("sign");
 		String user_agent = request.getHeader("User-Agent");
-//		System.out.println("body : " + body);요
+//		System.out.println("body : " + body);
 
 		try{
 			if(sign != null) {
 				System.out.println(sign);
 
-				if("login".equals(sign)){
-					HttpSession session = request.getSession(false);
-					if(session != null){
-						throw new MyException("이미 로그인 상태입니다.", HttpStatus.BAD_REQUEST);
-					}
-					String user_id = body.get("user_id");
-					String user_password = body.get("user_password");
-					UserLoginDto userLoginDto = new UserLoginDto(user_id, user_password);
+				switch (sign){
+					case "login":
+						HttpSession session = request.getSession(false);
+						if(session != null){
+							throw new MyException("이미 로그인 상태입니다.", HttpStatus.BAD_REQUEST);
+						}
+						String user_id = body.get("user_id");
+						String user_password = body.get("user_password");
+						UserLoginDto userLoginDto = new UserLoginDto(user_id, user_password);
 //					System.out.println(userLoginDto);
 
-					UserLoginVO userLoginVO = userService.login(userLoginDto);
-					if(userLoginVO != null){  // 로그인 성공
-						session = request.getSession();
-						session.setAttribute("userLoginDto", userLoginDto);
-						session.setAttribute("user_agent", user_agent);
-						session.setAttribute("user_key", userLoginVO.getUser_key());
+						UserLoginVO userLoginVO = userService.login(userLoginDto);
+						if(userLoginVO != null){  // 로그인 성공
+							session = request.getSession();
+							session.setAttribute("userLoginDto", userLoginDto);
+							session.setAttribute("user_agent", user_agent);
+							session.setAttribute("user_key", userLoginVO.getUser_key());
 
-						HttpResponseBody<UserLoginVO> responseBody = new HttpResponseBody<>("login OK", userLoginVO);
-						response = new ResponseEntity<>(responseBody, HttpStatus.OK);
-					} else{
-						throw new MyException("해당하는 회원이 없습니다.", HttpStatus.BAD_REQUEST);
-					}
+							HttpResponseBody<UserLoginVO> responseBody = new HttpResponseBody<>("login OK", userLoginVO);
+							return new ResponseEntity<>(responseBody, HttpStatus.OK);
+						} else{
+							throw new MyException("해당하는 회원이 없습니다.", HttpStatus.BAD_REQUEST);
+						}
+					case "join":
+						String user_id_join = body.get("user_id");
+						if(userService.isUserIdDuplicate(user_id_join)){
+							throw new MyException("이미 존재하는 아이디입니다.", HttpStatus.BAD_REQUEST);
+						}
 
-				} else if ("join".equals(sign)) {
-					String user_id = body.get("user_id");
-					if(userService.isUserIdDuplicate(user_id)){
-						throw new MyException("이미 존재하는 아이디입니다.", HttpStatus.BAD_REQUEST);
-					}
+						String user_password_join = body.get("user_password");
+						String user_name = body.get("user_name");
+						String user_nickname = body.get("user_nickname");
+						String user_email = body.get("user_email");
+						UserJoinDto userJoinDto = new UserJoinDto(user_id_join, user_password_join, user_name, user_nickname, user_email);
+						System.out.println(userJoinDto);
 
-					String user_password = body.get("user_password");
-					String user_name = body.get("user_name");
-					String user_nickname = body.get("user_nickname");
-					String user_email = body.get("user_email");
-					UserJoinDto userJoinDto = new UserJoinDto(user_id, user_password, user_name, user_nickname, user_email);
-					System.out.println(userJoinDto);
+						userService.join(userJoinDto);
 
-					userService.join(userJoinDto);
+						HttpResponseBody<String> responseBody = new HttpResponseBody<>("OK", "회원가입 성공");
+						return new ResponseEntity<>(responseBody, HttpStatus.OK);
 
-					HttpResponseBody<String> responseBody = new HttpResponseBody<>("join OK", "회원가입 성공");
-					response = new ResponseEntity<>(responseBody, HttpStatus.OK);
-					return response;
-
-				} else{ // sign 입력이 잘못된 경우
-					throw new MyException("sign 값을 다시 확인해주세요.", HttpStatus.BAD_REQUEST);
+					default:
+						throw new MyException("sign 값을 다시 확인해주세요.", HttpStatus.BAD_REQUEST);
 				}
 
 			} else {
@@ -96,10 +95,8 @@ public class AuthController {
 				response = new ResponseEntity<>(responseBody, HttpStatus.BAD_REQUEST);
 			}
 		} catch (MyException e){
-			e.printStackTrace();
-			HttpResponseBody<String> responseBody = new HttpResponseBody<>();
-			responseBody.setData(e.getMessage());
-			response = new ResponseEntity<>(responseBody, e.getStatus());
+			HttpResponseBody<String> responseBody = new HttpResponseBody<>("ERROR", e.getMessage());
+			return new ResponseEntity<>(responseBody, e.getStatus());
 		}
 
 		return response;

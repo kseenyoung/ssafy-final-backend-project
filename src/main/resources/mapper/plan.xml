@@ -4,6 +4,16 @@
         "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.ssafy.api.plan.model.mapper.PlanMapper">
 
+    <resultMap id="userListDto" type="userListVO">
+        <result property="plan_id" column="plan_id"/>
+        <result property="title" column="title" />
+        <result property="plan_date" column="plan_date"/>
+        <result property="created_at" column="created_at"/>
+        <result property="updated_at" column="updated_at"/>
+        <result property="hit" column="hit"/>
+        <collection property="users" column="plan_id" javaType="list" ofType="String" select="userList" />
+    </resultMap>
+
     <insert id="createPlan" parameterType="planCreateDto">
         insert into plans(title, plan_date)
         values(#{title}, #{plan_date})
@@ -27,5 +37,18 @@
             (#{plan_id}, #{item})
         </foreach>
     </insert>
+
+    <select id="selectUserList" parameterType="String" resultMap="userListDto">
+        select plans.plan_id, title, plan_date, plans.created_at as created_at, plans.updated_at as updated_at, hit
+        from Users join UserPlans on Users.user_id = Userplans.user_id
+        join Plans on Userplans.plan_id = Plans.plan_id
+        where users.user_id = #{user_id}
+    </select>
+
+    <select id="userList" parameterType="int" resultType="String">
+        select user_id
+        from UserPlans
+        where plan_id = #{plan_id}
+    </select>
 
 </mapper>

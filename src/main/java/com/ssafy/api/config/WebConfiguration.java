@@ -9,7 +9,7 @@ import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
-@Configuration
+//@Configuration
 @EnableWebMvc
 public class WebConfiguration implements WebMvcConfigurer {
 
@@ -24,7 +24,7 @@ public class WebConfiguration implements WebMvcConfigurer {
 //		Allow all headers.
 //		Set max age to 1800 seconds (30 minutes).
         registry
-                .addMapping("/**")
+                .addMapping("/api/*")
 //                .allowedOrigins("*")
 //			.allowedOrigins("http://localhost:5173", "http://localhost:5174")
                 .allowedMethods(HttpMethod.GET.name(), HttpMethod.POST.name(), HttpMethod.PUT.name(),
@@ -39,6 +39,7 @@ public class WebConfiguration implements WebMvcConfigurer {
     @Override
     public void addInterceptors(InterceptorRegistry registry) {
         registry.addInterceptor(sessionInterceptor)
-                .excludePathPatterns("/auth");
+                .excludePathPatterns("/api/auth")
+                .excludePathPatterns("");
     }
 }
