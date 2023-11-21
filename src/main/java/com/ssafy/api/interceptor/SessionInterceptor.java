@@ -7,6 +7,7 @@ import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Component;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -18,7 +19,12 @@ public class SessionInterceptor implements HandlerInterceptor {
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler)
             throws Exception {
-//        System.out.println("login check Interceptor");
+        // preflight 요청(OPTIONS)에 대해 Interceptor 영향을 받지 안도록 함
+        // TODO: OPTIONS에 대한 요청을 모두 허용하는 것에 대한 보안적 고려
+        if(request.getMethod().equals("OPTIONS")){
+            return true;
+        }
+
         HttpSession session = request.getSession(false);
 //        Writer out = response.getWriter();
         if(session == null){
