@@ -15,7 +15,7 @@
     </resultMap>
 
     <insert id="createPlan" parameterType="planCreateDto">
-        insert into plans(title, plan_date)
+        insert into Plans(title, plan_date)
         values(#{title}, #{plan_date})
         <selectKey resultType="int" keyProperty="plan_id" order="AFTER">
             SELECT last_insert_id()
@@ -37,6 +37,7 @@
             (#{plan_id}, #{item})
         </foreach>
     </insert>
+
 
     <select id="selectUserList" parameterType="String" resultMap="userListDto">
         select plans.plan_id, title, plan_date, plans.created_at as created_at, plans.updated_at as updated_at, hit
