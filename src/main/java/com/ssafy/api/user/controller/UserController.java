@@ -27,12 +27,6 @@ public class UserController {
     @Autowired
     UserService userService;
 
-    @GetMapping("home")
-    public String home(){
-        System.out.println("home");
-        return "forward:/";
-    }
-
     @PostMapping("")
     public ResponseEntity<HttpResponseBody<?>> user(@RequestBody Map<String, Object> body, HttpServletRequest request){
         String sign = (String)body.get("sign");

@@ -4,15 +4,18 @@ import com.ssafy.api.user.model.UserJWTLoginDto;
 import com.ssafy.api.user.model.UserJoinDto;
 import com.ssafy.api.user.model.UserLoginDto;
 import com.ssafy.api.user.model.UserLoginVO;
-import com.ssafy.api.utils.Encryption;
+import com.ssafy.api.user.model.UserSession;
+import com.ssafy.api.utils.SHAEncryption;
 import com.ssafy.api.exception.MyException;
 import java.util.UUID;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
 import com.ssafy.api.user.model.mapper.UserMapper;
 import com.ssafy.api.utils.JwtTokenProvider;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
 public class UserServiceImpl implements UserService {
@@ -40,12 +43,23 @@ public class UserServiceImpl implements UserService {
 	}
 
 	@Override
-	public UserLoginVO login(UserLoginDto userLoginDto) throws MyException {
-		String encryptedUserPassword = Encryption.encrypt(userLoginDto.getUser_password());
+	public UserLoginVO login(UserLoginDto userLoginDto, UserSession userSession) throws MyException {
+//		System.out.println(userLoginDto.getUser_id());
+		String salt = userMapper.getSalt(userLoginDto.getUser_id());
+		if(salt == null){
+			throw new MyException("해당하는 유저가 없습니다.", HttpStatus.NOT_ACCEPTABLE);
+		}
+
+		String encryptedUserPassword = SHAEncryption.encrypt(userLoginDto.getUser_password(), salt);
 		userLoginDto.setUser_encryptedPassword(encryptedUserPassword);
+		userSession.setEncrypted_user_password(encryptedUserPassword);
 
 		UserLoginVO userLoginVO = userMapper.login(userLoginDto);
-		userLoginVO.setUser_key(UUID.randomUUID().toString());
+		String user_key = UUID.randomUUID().toString();
+		userLoginVO.setUser_key(user_key);
+		userSession.setUser_key(user_key);
+		userSession.setSalt(salt);
+
 		return userLoginVO;
 	}
 
@@ -56,9 +70,15 @@ public class UserServiceImpl implements UserService {
     }
 
 	@Override
+	@Transactional
 	public void join(UserJoinDto userJoinDto) throws MyException {
-		String encryptedPassword = Encryption.encrypt(userJoinDto.getUser_password());
+		String salt = SHAEncryption.genSalt();
+		String encryptedPassword = SHAEncryption.encrypt(userJoinDto.getUser_password(), salt);
+
 		userJoinDto.setUser_encryptedPassword(encryptedPassword);
+		userJoinDto.setSalt(salt);
+
 		userMapper.join(userJoinDto);
+		userMapper.setSalt(userJoinDto);
 	}
 }

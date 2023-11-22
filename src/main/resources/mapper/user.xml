@@ -36,4 +36,15 @@
         update salt=#{salt},access_token=#{access_token},refresh_token=#{refresh_token}
     </insert>
 
+    <select id="getSalt" parameterType="String" resultType="String">
+        select salt
+        from UserInfo
+        where user_id = #{user_id}
+    </select>
+
+    <insert id="setSalt" parameterType="userJoinDto">
+        insert into UserInfo(user_id, salt)
+        values(#{user_id}, #{salt})
+    </insert>
+
 </mapper>

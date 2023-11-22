@@ -16,4 +16,6 @@ public interface UserMapper {
 	public void saveToken(UserJWTLoginDto m);
 	String isUserIdDuplicate(String userId);
 	void join(UserJoinDto userJoinDto);
+    void setSalt(UserJoinDto userJoinDto);
+	String getSalt(String userId);
 }

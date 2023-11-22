@@ -2,10 +2,11 @@ package com.ssafy.api.user.model;
 
 import com.ssafy.api.exception.MyException;
 import com.ssafy.api.utils.RegEx;
+import lombok.Builder;
 import org.springframework.http.HttpStatus;
 
 public class UserJoinDto {
-    private String user_id, user_password, user_name, user_nickname, user_email;
+    private String user_id, user_password, user_name, user_nickname, user_email, salt;
 
     public UserJoinDto() {}
 
@@ -77,6 +78,14 @@ public class UserJoinDto {
     public void setUser_email(String user_email) throws MyException {
         RegEx.isUserEmail(user_email);
         this.user_email = user_email;
+    }
+
+    public String getSalt() {
+        return salt;
+    }
+
+    public void setSalt(String salt) {
+        this.salt = salt;
     }
 
     @Override
