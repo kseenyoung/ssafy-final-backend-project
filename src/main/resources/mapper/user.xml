@@ -47,4 +47,10 @@
         values(#{user_id}, #{salt})
     </insert>
 
+    <select id="email">
+        select user_email
+        from users
+        where user_id = #{user_id}
+    </select>
+
 </mapper>

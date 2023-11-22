@@ -19,6 +19,7 @@ public class PlanServiceImpl implements PlanService{
     @Override
     @Transactional
     public void create(PlanCreateDto planCreateDto) throws MyException {
+        // TODO: 여행 계획 생성자와 멘션된 사람 따로 받아서 Message
         planMapper.createPlan(planCreateDto);
         planMapper.connectUserAndPlan(planCreateDto);
         planMapper.connectPlanAndAttractionInfo(planCreateDto);

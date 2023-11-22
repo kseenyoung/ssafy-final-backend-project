@@ -16,5 +16,5 @@ public interface UserService {
 
     void join(UserJoinDto userJoinDto) throws MyException;
 
-//    String email(String userIdEmail);
+    String email(String user_id) throws MyException;
 }

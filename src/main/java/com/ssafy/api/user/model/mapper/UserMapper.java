@@ -18,4 +18,5 @@ public interface UserMapper {
 	void join(UserJoinDto userJoinDto);
     void setSalt(UserJoinDto userJoinDto);
 	String getSalt(String userId);
+    String email(String userId);
 }

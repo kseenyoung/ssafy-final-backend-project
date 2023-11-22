@@ -16,6 +16,7 @@ import org.springframework.stereotype.Service;
 import com.ssafy.api.user.model.mapper.UserMapper;
 import com.ssafy.api.utils.JwtTokenProvider;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.multipart.MultipartException;
 
 @Service
 public class UserServiceImpl implements UserService {
@@ -80,5 +81,14 @@ public class UserServiceImpl implements UserService {
 
 		userMapper.join(userJoinDto);
 		userMapper.setSalt(userJoinDto);
+	}
+
+	@Override
+	public String email(String user_id) throws MyException {
+		String email = userMapper.email(user_id);
+		if(email == null){
+			throw new MyException("유저의 이메일이 없음", HttpStatus.NOT_ACCEPTABLE);
+		}
+		return email;
 	}
 }

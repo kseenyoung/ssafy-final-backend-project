@@ -94,29 +94,34 @@ public class AuthController {
 						HttpResponseBody<String> responseBody = new HttpResponseBody<>("OK", "회원가입 성공");
 						return new ResponseEntity<>(responseBody, HttpStatus.OK);
 
-					case "emailCheck":
+					case "email1":
 						String user_id_email = (String)body.get("user_id");
-//						String user_email_emailCheck = userService.email(user_id_email);
+						String user_email_emailCheck = userService.email(user_id_email);
 
-						String random = UUID.randomUUID().toString().substring(0, 6);
-						System.out.println(random);
+						String token = UUID.randomUUID().toString().substring(0, 6);
+						System.out.println(token);
 
 						SimpleMailMessage msg = new SimpleMailMessage();
-						msg.setTo("kseenyoung@gmail.com");
-						msg.setSubject("[Traverse] 행운의 편지");
+						msg.setTo(user_email_emailCheck);
+						msg.setSubject("[Traverse] 행운의 편지(인증 토큰 확인)");
 
 						sb.append("이 메일은 영국에서 부터 시작되어..\n");
 						sb.append("아래 인증 코드를 입력해주세요\n");
-						sb.append(random);
+						sb.append(token);
 
 						msg.setText(sb.toString());
-						session.setAttribute("email_token", random);
+						session.setAttribute("email_token", token);
 
 						try {
 							javaMailSender.send(msg);
 						} catch (Exception e) {
 							e.printStackTrace();
 						}
+
+						break;
+
+					case "email2":
+
 
 						break;
 
