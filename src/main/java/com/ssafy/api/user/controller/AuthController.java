@@ -9,12 +9,14 @@ import com.ssafy.api.exception.MyException;
 import java.util.HashMap;
 import java.util.Map;
 
+import java.util.UUID;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
-import org.apache.tomcat.jni.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.mail.SimpleMailMessage;
+import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -34,12 +36,17 @@ public class AuthController {
 	
 	@Autowired
 	OAuthService oAuthService;
+
+	@Autowired
+	JavaMailSender javaMailSender;
 	
 	@PostMapping("")
 	public ResponseEntity<HttpResponseBody<?>> auth(@RequestBody Map<String, String> body, HttpServletRequest request){
 		ResponseEntity<HttpResponseBody<?>> response = null;
+		StringBuilder sb = new StringBuilder();
 		String sign = body.get("sign");
 		String user_agent = request.getHeader("User-Agent");
+		HttpSession session = request.getSession(false);
 
 		try{
 			if(sign != null) {
@@ -47,7 +54,7 @@ public class AuthController {
 
 				switch (sign){
 					case "login":
-						HttpSession session = request.getSession(false);
+						session = request.getSession(false);
 						if(session != null){
 							throw new MyException("이미 로그인 상태입니다.", HttpStatus.BAD_REQUEST);
 						}
@@ -87,6 +94,31 @@ public class AuthController {
 						HttpResponseBody<String> responseBody = new HttpResponseBody<>("OK", "회원가입 성공");
 						return new ResponseEntity<>(responseBody, HttpStatus.OK);
 
+					case "emailCheck":
+						String user_id_email = (String)body.get("user_id");
+//						String user_email_emailCheck = userService.email(user_id_email);
+
+						String random = UUID.randomUUID().toString().substring(0, 6);
+						System.out.println(random);
+
+						SimpleMailMessage msg = new SimpleMailMessage();
+						msg.setTo("kseenyoung@gmail.com");
+						msg.setSubject("[Traverse] 행운의 편지");
+
+						sb.append("이 메일은 영국에서 부터 시작되어..\n");
+						sb.append("아래 인증 코드를 입력해주세요\n");
+						sb.append(random);
+
+						msg.setText(sb.toString());
+						session.setAttribute("email_token", random);
+
+						try {
+							javaMailSender.send(msg);
+						} catch (Exception e) {
+							e.printStackTrace();
+						}
+
+						break;
 
 					default:
 						throw new MyException("sign 값을 다시 확인해주세요.", HttpStatus.BAD_REQUEST);

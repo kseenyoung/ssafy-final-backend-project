@@ -15,4 +15,6 @@ public interface UserService {
     boolean isUserIdDuplicate(String userId) throws MyException;
 
     void join(UserJoinDto userJoinDto) throws MyException;
+
+//    String email(String userIdEmail);
 }
